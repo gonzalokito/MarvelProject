@@ -1,10 +1,11 @@
 package com.example.marvelproject.data.network
 
+import com.example.marvelproject.data.model.ResponseAllCharactersDataModel
 import retrofit2.http.GET
 
 
 interface MarvelService {
 
-    //@GET("users/{user}/repos")
-    //fun listRepos(@Path("user") user: String?): Call<List<Repo?>?>?
+    @GET("/v1/public/characters")
+    suspend fun getAllCharacters(): ResponseAllCharactersDataModel
 }

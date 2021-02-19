@@ -16,6 +16,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String","PRIVATE_KEY","\"3b49dcfe0d77138d17493d02655801bed3be77bd\""
+        buildConfigField "String","PUBLIC_KEY","\"6e711e8eca44fad5533305286eb85268\""
     }
 
     buildTypes {
@@ -53,4 +56,8 @@ dependencies {
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
+
+    //HttpInterceptor
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
 }
