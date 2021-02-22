@@ -22,9 +22,9 @@ class MarvelNetwork {
 
         service = retrofit.create(MarvelService::class.java)
     }
-     suspend fun getAllCharacters(): ResponseAllCharactersDataModel {
+     suspend fun getAllCharacters(limit: Int): ResponseAllCharactersDataModel {
         loadRetrofit()
-         return service.getAllCharacters()
+         return service.getAllCharacters(limit)
     }
 
     private fun createHttpClient():OkHttpClient{
