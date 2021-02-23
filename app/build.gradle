@@ -4,6 +4,11 @@ plugins {
     id 'kotlin-kapt'
 }
 
+//Cargar claves desde otro fichero
+def keysFile= new Properties()
+
+keysFile.load(new FileInputStream(rootProject.file("apikey.properties")))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -17,8 +22,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String","PRIVATE_KEY","\"3b49dcfe0d77138d17493d02655801bed3be77bd\""
-        buildConfigField "String","PUBLIC_KEY","\"6e711e8eca44fad5533305286eb85268\""
+        buildConfigField "String","PRIVATE_KEY",keysFile["pRIVATE_KEY"]
+        buildConfigField "String","PUBLIC_KEY",keysFile["pUBLIC_KEY"]
     }
 
     buildTypes {
