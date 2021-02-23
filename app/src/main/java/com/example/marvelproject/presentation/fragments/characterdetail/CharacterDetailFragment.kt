@@ -9,10 +9,12 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import com.example.marvelproject.base.BaseExtraData
 import com.example.marvelproject.base.BaseState
 import com.example.marvelproject.data.NoCharacterException
 import com.example.marvelproject.databinding.CharacterDetailFragmentBinding
+import com.google.android.material.tabs.TabLayoutMediator
 
 class CharacterDetailFragment : Fragment() {
 
@@ -87,13 +89,27 @@ class CharacterDetailFragment : Fragment() {
                     }
                 }
 
-            //binding.webview.loadUrl(url.url)
+                val viewPager = binding.pager
+                val pagerAdapter = CharacterDetailViewPageAdapter(this, character)
+                viewPager.adapter = pagerAdapter
+
+                TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->
+                    when(position){
+                        0->{tab.text="Comics"}
+                        1->{tab.text="Series"}
+                        2->{tab.text="Stories"}
+                        else->{tab.text=""}
+                    }
+                }.attach()
+
+
             }
 
         }
     }
 
     private fun setupView() {
+
 
     }
 
