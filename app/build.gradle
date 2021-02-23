@@ -2,7 +2,13 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
 }
+
+//Cargar claves desde otro fichero
+def keysFile= new Properties()
+
+keysFile.load(new FileInputStream(rootProject.file("apikey.properties")))
 
 android {
     compileSdkVersion 30
@@ -17,8 +23,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String","PRIVATE_KEY","\"3b49dcfe0d77138d17493d02655801bed3be77bd\""
-        buildConfigField "String","PUBLIC_KEY","\"6e711e8eca44fad5533305286eb85268\""
+        buildConfigField "String","PRIVATE_KEY",keysFile["pRIVATE_KEY"]
+        buildConfigField "String","PUBLIC_KEY",keysFile["pUBLIC_KEY"]
     }
 
     buildTypes {
@@ -50,6 +56,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

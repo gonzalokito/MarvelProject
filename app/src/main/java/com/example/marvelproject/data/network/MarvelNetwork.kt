@@ -3,6 +3,7 @@ package com.example.marvelproject.data.network
 import com.example.marvelproject.BuildConfig
 import com.example.marvelproject.base.util.tomd5
 import com.example.marvelproject.data.model.ResponseAllCharactersDataModel
+import com.example.marvelproject.data.model.ResponseCharacterDataModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -58,6 +59,10 @@ class MarvelNetwork {
         return builder.build()
     }
 
+    suspend fun getCharacter(characterId: Int): ResponseCharacterDataModel {
+        loadRetrofit()
+        return service.getCharacter(characterId)
+    }
 
 
 }
