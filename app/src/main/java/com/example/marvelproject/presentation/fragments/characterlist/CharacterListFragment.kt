@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.marvelproject.R
@@ -50,14 +52,15 @@ class CharacterListFragment : Fragment() {
         setupView()
 
         viewModel.requestInformation()
+
         return binding.root
     }
 
     private fun setupView() {
 
         //Setup RecyclerView
-        mAdapter= CharacterListAdapter(listOf(),requireActivity()) {
-
+        mAdapter= CharacterListAdapter(listOf(),requireActivity()) { character->
+            findNavController().navigate(CharacterListFragmentDirections.actionCharacterListFragmentToCharacterDetailFragment(character.id))
         }
 
         binding.fragmentCharacterListRV.apply {
@@ -80,7 +83,12 @@ class CharacterListFragment : Fragment() {
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int,id: Long) {
 
-                viewModel.onActionChangeSpinnerValue(parent.getItemAtPosition(position).toString())
+                if (position == 0){
+                    viewModel.onActionChangeSpinnerValue("20")
+                }else {
+                    viewModel.onActionChangeSpinnerValue(parent.getItemAtPosition(position).toString()
+                    )
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
