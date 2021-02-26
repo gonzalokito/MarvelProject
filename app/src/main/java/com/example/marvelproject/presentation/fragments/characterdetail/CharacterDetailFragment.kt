@@ -9,72 +9,46 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import com.example.marvelproject.base.BaseExtraData
+import com.example.marvelproject.base.BaseFragment
 import com.example.marvelproject.base.BaseState
 import com.example.marvelproject.data.NoCharacterException
 import com.example.marvelproject.databinding.CharacterDetailFragmentBinding
+import com.google.android.material.tabs.TabLayoutMediator
 
-class CharacterDetailFragment : Fragment() {
+class CharacterDetailFragment() : BaseFragment<CharacterDetailState,CharacterDetailViewModel,CharacterDetailFragmentBinding>() {
 
+    override val viewModelClass= CharacterDetailViewModel::class.java
 
-    private val viewModel: CharacterDetailViewModel by viewModels()
-
-    lateinit var binding: CharacterDetailFragmentBinding
+    lateinit var vm: CharacterDetailViewModel
 
     private val args: CharacterDetailFragmentArgs by navArgs()
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        binding= CharacterDetailFragmentBinding.inflate(layoutInflater,container,false)
-
-        viewModel.getState().observe(viewLifecycleOwner,{ state ->
-
-            when(state) {
-
-                is BaseState.Normal -> {
-                    onNormal(state.dataNormal as CharacterDetailState)
-                }
-
-                is BaseState.Error -> {
-                    onError(state.error)
-                }
-
-                is BaseState.Loading -> {
-                    onLoading(state.dataLoading)
-                }
-            }
-        })
-
-        setupView()
-
-        viewModel.requestInformation(args.characterId)
-
-        return binding.root
+    override fun setupView(viewModel: CharacterDetailViewModel) {
+        vm=viewModel
+        vm.requestInformation(args.characterId)
     }
 
-    private fun onError(error: Throwable) {
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> CharacterDetailFragmentBinding
+            = CharacterDetailFragmentBinding::inflate
 
+
+    override fun onLoading(dataLoading: BaseExtraData?) {
+
+    }
+
+    override fun onError(error: Throwable) {
         when(error){
             is NoCharacterException -> {
-
             }
             else ->{
-
             }
         }
     }
 
-    private fun onLoading(dataLoading: BaseExtraData?) {
-
-    }
-
-    private fun onNormal(characterDetailState: CharacterDetailState) {
-
-        characterDetailState.character?.let{ character ->
+    override fun onNormal(baseViewState: CharacterDetailState) {
+        baseViewState.character?.let{ character ->
             binding.textViewTitle.text=character.name
             binding.textViewDescription.text=character.description
 
@@ -87,14 +61,22 @@ class CharacterDetailFragment : Fragment() {
                     }
                 }
 
-            //binding.webview.loadUrl(url.url)
+                val viewPager = binding.pager
+                val pagerAdapter = CharacterDetailViewPageAdapter(this, character)
+                viewPager.adapter = pagerAdapter
+
+                TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->
+                    when(position){
+                        0->{tab.text="Comics"}
+                        1->{tab.text="Series"}
+                        2->{tab.text="Stories"}
+                        else->{tab.text=""}
+                    }
+                }.attach()
+
             }
 
         }
-    }
-
-    private fun setupView() {
-
     }
 
 

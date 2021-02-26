@@ -5,23 +5,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.marvelproject.base.BaseState
+import com.example.marvelproject.base.BaseViewModel
 import com.example.marvelproject.data.MarvelRepository
 import kotlinx.coroutines.launch
 
-class CharacterDetailViewModel : ViewModel() {
+class CharacterDetailViewModel() : BaseViewModel<CharacterDetailState>() {
 
-    private val state = MutableLiveData<BaseState>()
-    fun getState(): LiveData<BaseState> = state
+    override val defaulState: CharacterDetailState= CharacterDetailState()
 
-    fun requestInformation(characterId: Int) {
-        state.postValue(BaseState.Loading())
-        viewModelScope.launch {
-            try{
-                val response= MarvelRepository().getCharacter(characterId)
-                state.postValue(BaseState.Normal(CharacterDetailState(response)))
-            }catch(e:Exception){
-                state.postValue(BaseState.Error(e))
-            }
-        }
+    override fun onStartFirstTime() {
+
     }
+    fun requestInformation(characterId: Int) {
+        updatetoLoadingState(CharacterDetailState(null))
+        executeCoroutines({
+            val response= MarvelRepository().getCharacter(characterId)
+            updatetoNormalState(CharacterDetailState(response))
+        },{ error ->
+            updatetoErrorState(CharacterDetailState(null),error)
+        })
+    }
+
+
 }
