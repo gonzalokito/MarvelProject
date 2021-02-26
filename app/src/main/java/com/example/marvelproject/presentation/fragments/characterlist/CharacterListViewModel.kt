@@ -11,27 +11,27 @@ class CharacterListViewModel() : BaseViewModel<CharacterListState>() {
         requestInformation()
     }
 
-    fun requestInformation() {
-        updatetoLoadingState(CharacterListState(listOf()))
+    private fun requestInformation() {
+        updateToLoadingState()
 
         checkDataState{state ->
         executeCoroutines({
-
             val response= MarvelRepository().getAllCharacters(state.limit)
-            updatetoNormalState(CharacterListState(response))
+            updateToNormalState(state.copy(characterList = response))
         },{ error->
-            updatetoErrorState(CharacterListState(listOf()),error)
-
+            updateToErrorState(error)
         })
         }
     }
 
-    fun onActionChangeSpinnerValue(itemAtPosition: String) {
+    fun onActionChangeSpinnerValue(limit: String) {
         checkDataState {state ->
-
+            if(state.limit!=limit.toInt()) {
+                updateDataState(state.copy(limit = limit.toInt()))
+                requestInformation()
+            }
         }
-        //requestInformation(itemAtPosition.toInt())
-    }
 
+    }
 
 }
