@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.marvelproject.base.BaseExtraData
+import com.example.marvelproject.base.BaseFragment
 import com.example.marvelproject.base.BaseState
 import com.example.marvelproject.data.NoCharacterException
 import com.example.marvelproject.data.model.Character

@@ -1,30 +1,37 @@
 package com.example.marvelproject.presentation.fragments.characterlist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.marvelproject.base.BaseState
+import com.example.marvelproject.base.BaseViewModel
 import com.example.marvelproject.data.MarvelRepository
-import kotlinx.coroutines.launch
 
-class CharacterListViewModel:ViewModel() {
+class CharacterListViewModel() : BaseViewModel<CharacterListState>() {
 
-    private val state = MutableLiveData<BaseState>()
-    fun getState():LiveData<BaseState> = state
+    override val defaulState: CharacterListState= CharacterListState()
 
-    fun requestInformation(limit: Int = 20) {
-        viewModelScope.launch {
-            try{
-                val response= MarvelRepository().getAllCharacters(limit)
-                state.postValue(BaseState.Normal(CharacterListState(response)))
-            }catch(e:Exception){
-                state.postValue(BaseState.Error(e))
-            }
+    override fun onStartFirstTime() {
+        requestInformation()
     }
+
+    fun requestInformation() {
+        updatetoLoadingState(CharacterListState(listOf()))
+
+        checkDataState{state ->
+        executeCoroutines({
+
+            val response= MarvelRepository().getAllCharacters(state.limit)
+            updatetoNormalState(CharacterListState(response))
+        },{ error->
+            updatetoErrorState(CharacterListState(listOf()),error)
+
+        })
+        }
     }
 
     fun onActionChangeSpinnerValue(itemAtPosition: String) {
-        requestInformation(itemAtPosition.toInt())
+        checkDataState {state ->
+
+        }
+        //requestInformation(itemAtPosition.toInt())
     }
+
+
 }

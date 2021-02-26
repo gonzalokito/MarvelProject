@@ -9,55 +9,35 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.marvelproject.R
 import com.example.marvelproject.base.BaseExtraData
+import com.example.marvelproject.base.BaseFragment
 import com.example.marvelproject.base.BaseState
 import com.example.marvelproject.databinding.FragmentCharacterListBinding
+import com.example.marvelproject.presentation.fragments.characterdetail.CharacterDetailFragmentArgs
 
 
-class CharacterListFragment : Fragment() {
+class CharacterListFragment() : BaseFragment<CharacterListState,CharacterListViewModel,FragmentCharacterListBinding>() {
 
-    private lateinit var binding: FragmentCharacterListBinding
+    lateinit var mAdapter: CharacterListAdapter
 
-    private lateinit var mAdapter: CharacterListAdapter
+    override val viewModelClass= CharacterListViewModel::class.java
 
-    private val viewModel:CharacterListViewModel by viewModels()
+    lateinit var vm: CharacterListViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        // Inflate the layout for this fragment
-        binding= FragmentCharacterListBinding.inflate(layoutInflater,container,false)
 
-        viewModel.getState().observe(viewLifecycleOwner,{ state ->
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentCharacterListBinding
+            = FragmentCharacterListBinding::inflate
 
-        when(state) {
+    override fun setupView(viewModel: CharacterListViewModel) {
 
-            is BaseState.Normal -> {
-                onNormal(state.dataNormal as CharacterListState)
-            }
-
-            is BaseState.Error -> {
-                onError(state.error)
-            }
-
-            is BaseState.Loading -> {
-                onLoading(state.dataLoading)
-            }
-        }
-        })
-
-        setupView()
-
-        viewModel.requestInformation()
-
-        return binding.root
-    }
-
-    private fun setupView() {
-
+        vm= viewModel
         //Setup RecyclerView
         mAdapter= CharacterListAdapter(listOf(),requireActivity()) { character->
             findNavController().navigate(CharacterListFragmentDirections.actionCharacterListFragmentToCharacterDetailFragment(character.id))
@@ -72,7 +52,7 @@ class CharacterListFragment : Fragment() {
         //Setup Spinner
 
         ArrayAdapter.createFromResource(
-            requireActivity(), R.array.fragment_character_list_spinner_array,android.R.layout.simple_spinner_item
+                requireActivity(), R.array.fragment_character_list_spinner_array,android.R.layout.simple_spinner_item
         ).also { spinnerAdapter ->
             // Specify the layout to use when the list of choices appears
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -84,9 +64,9 @@ class CharacterListFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int,id: Long) {
 
                 if (position == 0){
-                    viewModel.onActionChangeSpinnerValue("20")
+                    vm.onActionChangeSpinnerValue("20")
                 }else {
-                    viewModel.onActionChangeSpinnerValue(parent.getItemAtPosition(position).toString()
+                    vm.onActionChangeSpinnerValue(parent.getItemAtPosition(position).toString()
                     )
                 }
             }
@@ -98,18 +78,17 @@ class CharacterListFragment : Fragment() {
         }
     }
 
-    private fun onNormal(characterListState: CharacterListState) {
-        mAdapter.updateList(characterListState.characterList)
-    }
-
-    private fun onLoading(dataLoading: BaseExtraData?) {
+    override fun onLoading(dataLoading: BaseExtraData?) {
 
     }
 
-    private fun onError(error: Throwable) {
+    override fun onError(error: Throwable) {
 
     }
 
+    override fun onNormal(data: CharacterListState) {
+        mAdapter.updateList(data.characterList)
+    }
 
 
 }
