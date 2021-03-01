@@ -21,7 +21,9 @@ import com.example.marvelproject.data.model.Item
 import com.example.marvelproject.databinding.CharacterDetailFragmentBinding
 import com.example.marvelproject.databinding.FragmentCurriculumBinding
 
-class CurriculumFragment (private val items: List<Item>) : Fragment() {
+class CurriculumFragment (private val items: List<Item>,
+                          private val showButton:Boolean=false,
+                          private val myListener: (comic: String) -> Unit) : Fragment() {
 
     lateinit var binding: FragmentCurriculumBinding
 
@@ -42,7 +44,7 @@ class CurriculumFragment (private val items: List<Item>) : Fragment() {
         }
 
         binding.fragmentCharacterListRV.apply {
-            adapter=CharacterDetailRecyclerViewAdapter(listToShow)
+            adapter=CharacterDetailRecyclerViewAdapter(listToShow,showButton,myListener)
             itemAnimator=DefaultItemAnimator()
             layoutManager=LinearLayoutManager(requireActivity())
         }

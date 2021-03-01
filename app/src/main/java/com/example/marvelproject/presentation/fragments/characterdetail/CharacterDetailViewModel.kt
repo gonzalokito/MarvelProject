@@ -1,13 +1,7 @@
 package com.example.marvelproject.presentation.fragments.characterdetail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.marvelproject.base.BaseState
 import com.example.marvelproject.base.BaseViewModel
 import com.example.marvelproject.data.MarvelRepository
-import kotlinx.coroutines.launch
 
 class CharacterDetailViewModel() : BaseViewModel<CharacterDetailState>() {
 
@@ -17,12 +11,12 @@ class CharacterDetailViewModel() : BaseViewModel<CharacterDetailState>() {
 
     }
     fun requestInformation(characterId: Int) {
-        updatetoLoadingState(CharacterDetailState(null))
+        updateToLoadingState()
         executeCoroutines({
             val response= MarvelRepository().getCharacter(characterId)
-            updatetoNormalState(CharacterDetailState(response))
+            updateToNormalState(CharacterDetailState(response))
         },{ error ->
-            updatetoErrorState(CharacterDetailState(null),error)
+            updateToErrorState(error)
         })
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.example.marvelproject.base.BaseExtraData
@@ -62,7 +63,9 @@ class CharacterDetailFragment() : BaseFragment<CharacterDetailState,CharacterDet
                 }
 
                 val viewPager = binding.pager
-                val pagerAdapter = CharacterDetailViewPageAdapter(this, character)
+                val pagerAdapter = CharacterDetailViewPageAdapter(this, character){
+                    findNavController().navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToComicDetailFragment(it))
+                }
                 viewPager.adapter = pagerAdapter
 
                 TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->

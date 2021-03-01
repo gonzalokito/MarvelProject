@@ -29,9 +29,6 @@ abstract class BaseViewModel<VS: BaseViewState>: ViewModel() {
         observableState.postValue(baseState)
     }
 
-
-
-
     abstract fun onStartFirstTime()
     open fun onResume() {}
 
@@ -39,20 +36,29 @@ abstract class BaseViewModel<VS: BaseViewState>: ViewModel() {
      * State managment
      */
 
-    fun updatetoNormalState(viewState: VS){
-        baseState= BaseState.Normal(viewState)
-        observableState.postValue(baseState)
+    fun updateToNormalState(viewState: VS){
+        updateView(BaseState.Normal(viewState))
     }
 
-
-    fun updatetoLoadingState(viewState: VS, loadingData: BaseExtraData?= null){
-        baseState= BaseState.Loading(viewState,loadingData)
-        observableState.postValue(baseState)
+    fun updateDataState(viewState: VS){
+        baseState=BaseState.Normal(viewState)
     }
 
+    fun updateToLoadingState(loadingData: BaseExtraData?= null){
+        baseState?.let {
+            updateView(BaseState.Loading(it.data,loadingData))
+        } ?: updateView(BaseState.Loading(defaulState,loadingData))
 
-    fun updatetoErrorState(viewState: VS, errorData: Throwable = Throwable()){
-        baseState= BaseState.Error(viewState,errorData)
+    }
+
+    fun updateToErrorState(errorData: Throwable = Throwable()){
+        baseState?.let {
+            updateView(BaseState.Error(it.data,errorData))
+        } ?: updateView(BaseState.Error(defaulState,errorData))
+    }
+
+    private fun updateView(state: BaseState<VS>){
+        baseState= state
         observableState.postValue(baseState)
     }
 
@@ -62,21 +68,20 @@ abstract class BaseViewModel<VS: BaseViewState>: ViewModel() {
         }?: checkDataStateFunction(defaulState)
     }
 
-
     /**
      * Corroutines
      */
 
     fun executeCoroutines(
             block: suspend CoroutineScope.() -> Unit,
-            excpetionBlock: suspend CoroutineScope.(Throwable) -> Unit){
+            exceptionBlock: suspend CoroutineScope.(Throwable) -> Unit){
         viewModelScope.launch{
-        try {
-            block()
-        } catch (e: Exception) {
-            excpetionBlock(e)
+            try {
+                block()
+            } catch (e: Exception) {
+                exceptionBlock(e)
+            }
         }
-    }
     }
 
 

@@ -66,14 +66,11 @@ class CharacterListFragment() : BaseFragment<CharacterListState,CharacterListVie
                 if (position == 0){
                     vm.onActionChangeSpinnerValue("20")
                 }else {
-                    vm.onActionChangeSpinnerValue(parent.getItemAtPosition(position).toString()
-                    )
+                    vm.onActionChangeSpinnerValue(parent.getItemAtPosition(position).toString())
                 }
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
 
         }
     }
@@ -88,6 +85,8 @@ class CharacterListFragment() : BaseFragment<CharacterListState,CharacterListVie
 
     override fun onNormal(data: CharacterListState) {
         mAdapter.updateList(data.characterList)
+        val list=resources.getStringArray(R.array.fragment_character_list_spinner_array)
+        binding.spinner.setSelection(list.indexOf(data.limit.toString()))
     }
 
 
