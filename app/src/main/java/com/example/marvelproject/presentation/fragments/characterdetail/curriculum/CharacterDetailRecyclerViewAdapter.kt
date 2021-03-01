@@ -2,12 +2,16 @@ package com.example.marvelproject.presentation.fragments.characterdetail.curricu
 
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelproject.databinding.ItemCurriculumBinding
 
 
-class CharacterDetailRecyclerViewAdapter (private var myList: List<String>): RecyclerView.Adapter<CharacterDetailRecyclerViewAdapter.ViewHolder>() {
+class CharacterDetailRecyclerViewAdapter (private var myList: List<String>,
+                                          private val showButton:Boolean=false,
+                                          private val myListener: (comic: String) -> Unit)
+    : RecyclerView.Adapter<CharacterDetailRecyclerViewAdapter.ViewHolder>() {
 
 
     class ViewHolder(val binding: ItemCurriculumBinding): RecyclerView.ViewHolder(binding.root){
@@ -24,6 +28,10 @@ class CharacterDetailRecyclerViewAdapter (private var myList: List<String>): Rec
         val item= myList[position]
         holder.binding.apply {
             itemCurriculumTextView.text = item
+            itemCurriculumButtonSee.visibility = if (showButton) View.VISIBLE else View.GONE
+            itemCurriculumButtonSee.setOnClickListener {
+                myListener.invoke(item)
+            }
         }
 
     }
