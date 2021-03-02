@@ -2,8 +2,11 @@ package com.example.marvelproject.presentation.fragments.characterlist
 
 import com.example.marvelproject.base.BaseViewModel
 import com.example.marvelproject.data.MarvelRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class CharacterListViewModel() : BaseViewModel<CharacterListState>() {
+@HiltViewModel
+class CharacterListViewModel @Inject constructor(private val repository: MarvelRepository) : BaseViewModel<CharacterListState>() {
 
     override val defaulState: CharacterListState= CharacterListState()
 
@@ -16,7 +19,7 @@ class CharacterListViewModel() : BaseViewModel<CharacterListState>() {
 
         checkDataState{state ->
         executeCoroutines({
-            val response= MarvelRepository().getAllCharacters(state.limit)
+            val response= repository.getAllCharacters(state.limit)
             updateToNormalState(state.copy(characterList = response))
         },{ error->
             updateToErrorState(error)

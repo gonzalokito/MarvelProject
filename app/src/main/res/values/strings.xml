@@ -3,7 +3,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="character_sample">3D Man</string>
+    <string name="comicDetailFragmentTextNoDescription">Descripcion no disponible</string>
+    <string name="comicDetailFragmentTextNoTitle">Titulo no Disponible</string>
     <string name="itemCurriculumButtonSeeText">Ver</string>
+    <string name="error_message">Hubo un error al solicitar la informacion: \n %s</string>
     <string-array name = "fragment_character_list_spinner_array">
         <item>Selecciona el límite</item>
         <item> 40 </item>

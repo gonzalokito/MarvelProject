@@ -1,13 +1,27 @@
 package com.example.marvelproject.presentation.fragments.comicdetail
 
 import com.example.marvelproject.base.BaseViewModel
-import com.example.marvelproject.base.BaseViewState
+import com.example.marvelproject.data.MarvelRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ComicDetailViewModel() :BaseViewModel<ComicDetailState>() {
+@HiltViewModel
+class ComicDetailViewModel @Inject constructor(private val repository: MarvelRepository) :BaseViewModel<ComicDetailState>() {
 
     override val defaulState: ComicDetailState= ComicDetailState()
 
     override fun onStartFirstTime() {
 
+    }
+
+    fun requestInformation(id: Int){
+        updateToLoadingState()
+
+        executeCoroutines({
+            val comic= repository.getComic(id)
+            updateToNormalState(ComicDetailState(comic))
+        },{ error ->
+            updateToErrorState(error)
+        })
     }
 }
