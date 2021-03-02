@@ -1,7 +1,7 @@
 package com.example.marvelproject.presentation.fragments.characterlist
 
 import com.example.marvelproject.base.BaseViewModel
-import com.example.marvelproject.data.MarvelRepository
+import com.example.marvelproject.domain.repository.MarvelRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
