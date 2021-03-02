@@ -2,8 +2,11 @@ package com.example.marvelproject.presentation.fragments.characterdetail
 
 import com.example.marvelproject.base.BaseViewModel
 import com.example.marvelproject.data.MarvelRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class CharacterDetailViewModel() : BaseViewModel<CharacterDetailState>() {
+@HiltViewModel
+class CharacterDetailViewModel @Inject constructor(private val repository: MarvelRepository) : BaseViewModel<CharacterDetailState>() {
 
     override val defaulState: CharacterDetailState= CharacterDetailState()
 
@@ -13,7 +16,7 @@ class CharacterDetailViewModel() : BaseViewModel<CharacterDetailState>() {
     fun requestInformation(characterId: Int) {
         updateToLoadingState()
         executeCoroutines({
-            val response= MarvelRepository().getCharacter(characterId)
+            val response= repository.getCharacter(characterId)
             updateToNormalState(CharacterDetailState(response))
         },{ error ->
             updateToErrorState(error)

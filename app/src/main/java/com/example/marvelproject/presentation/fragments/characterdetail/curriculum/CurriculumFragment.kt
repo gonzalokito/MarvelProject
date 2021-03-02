@@ -20,7 +20,9 @@ import com.example.marvelproject.data.model.Character
 import com.example.marvelproject.data.model.Item
 import com.example.marvelproject.databinding.CharacterDetailFragmentBinding
 import com.example.marvelproject.databinding.FragmentCurriculumBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CurriculumFragment (private val items: List<Item>,
                           private val showButton:Boolean=false,
                           private val myListener: (comic: String) -> Unit) : Fragment() {

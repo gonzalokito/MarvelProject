@@ -17,7 +17,9 @@ import com.example.marvelproject.base.BaseState
 import com.example.marvelproject.data.NoCharacterException
 import com.example.marvelproject.databinding.CharacterDetailFragmentBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharacterDetailFragment() : BaseFragment<CharacterDetailState,CharacterDetailViewModel,CharacterDetailFragmentBinding>() {
 
     override val viewModelClass= CharacterDetailViewModel::class.java

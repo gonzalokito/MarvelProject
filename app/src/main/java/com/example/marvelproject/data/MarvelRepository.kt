@@ -3,20 +3,21 @@ package com.example.marvelproject.data
 import com.example.marvelproject.data.model.Character
 import com.example.marvelproject.data.model.Comic
 import com.example.marvelproject.data.network.MarvelNetwork
+import javax.inject.Inject
 
-class MarvelRepository {
+class MarvelRepository @Inject constructor(private val network: MarvelNetwork) {
 
     suspend fun getAllCharacters(limit: Int):List<Character>{
-        return MarvelNetwork().getAllCharacters(limit).data.results
+        return network.getAllCharacters(limit).data.results
     }
 
     suspend fun getCharacter(characterId: Int): Character {
-        val response= MarvelNetwork().getCharacter(characterId).data.results
+        val response= network.getCharacter(characterId).data.results
         return if(response.isNotEmpty()) response[0] else throw NoCharacterException()
 
     }
     suspend fun getComic(comicId: Int): Comic {
-        return MarvelNetwork().getComic(comicId).data.results.first()
+        return network.getComic(comicId).data.results.first()
 
     }
 }
