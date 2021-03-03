@@ -2,7 +2,7 @@ package com.example.marvelproject.presentation.fragments.characterdetail
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.marvelproject.data.model.Character
+import com.example.marvelproject.data.marvel.model.Character
 import com.example.marvelproject.presentation.fragments.characterdetail.curriculum.CurriculumFragment
 
 class CharacterDetailViewPageAdapter(fragment: Fragment, private val character: Character, private val myListener: (comic: Int) -> Unit): FragmentStateAdapter(fragment) {

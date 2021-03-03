@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.marvelproject.databinding.FragmentCharacterListBinding
-import com.example.marvelproject.presentation.fragments.characterdetail.CharacterDetailState
 
 
 abstract class BaseFragment<VS: BaseViewState,VM: BaseViewModel<VS>,DB: ViewDataBinding> : Fragment() {

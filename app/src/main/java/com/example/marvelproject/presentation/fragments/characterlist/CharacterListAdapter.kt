@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.marvelproject.R
-import com.example.marvelproject.data.model.Character
+import com.example.marvelproject.data.marvel.model.Character
 import com.example.marvelproject.databinding.ItemCharacterListBinding
 
 
